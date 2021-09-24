@@ -1,15 +1,18 @@
-import './Issue.css'
+import './IssueItem.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUserTag, faStar } from '@fortawesome/free-solid-svg-icons'
 import { faCalendarTimes } from '@fortawesome/free-regular-svg-icons'
+import React, { useState } from 'react';
 import moment from 'moment'
 
-const Issue = (props) => {
+const IssueItem = (props) => {
+  // TODO: use state
   const shortName  = [
       props.issue.User.surname,
       props.issue.User.firstName[0] + '.',
       props.issue.User.patronymic[0] + '.'
   ].join(' ')
+
   const testObject = {
     test: ''
   }
@@ -20,16 +23,6 @@ const Issue = (props) => {
     high: 'Высокий'
   }[testObject.test2]
 
-  function getStatus() {
-    if (props.issue) {
-      return {
-        todo: 'К выполнению',
-        doing: 'Выпоняется',
-        done: 'Закончена',
-        cancel: 'Отменена'
-      }[props.issue.status]
-    }
-  }
   const status = {
     todo: 'К выполнению',
     doing: 'Выпоняется',
@@ -37,7 +30,7 @@ const Issue = (props) => {
     cancel: 'Отменена'
   }[props.issue.status]
 
-  let color = ''
+  let color = '' // ?!?
   if ((status === 'todo' || status === 'doing') &&
     moment(props.issue.due_date).isBefore(moment.tz(new Date(), "GMT"))) {
     color = 'title_red'
@@ -78,4 +71,4 @@ const Issue = (props) => {
   );
 }
 
-export default Issue;
+export default IssueItem;

@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import './Issues.css'
-import Issue from '../../components/issue/Issue'
+import IssueItem from '../../components/issueItem/IssueItem'
+import UpdateIssue from '../../components/updateIssue/UpdateIssue';
 import CreateIssue from '../../components/createIssue/CreateIssue'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
@@ -12,7 +13,7 @@ const Issues = () => {
   const auth = useContext(AuthContext)
   console.log('isssues start', auth)
   const [showCreateIssue, setShowCreateIssue] = useState(false)
-  const [showUpdateIssue, setUpdateIssue] = useState(false)
+  const [showUpdateIssue, setShowUpdateIssue] = useState(false)
   const [issues, setIssues] = useState(false)
   const [groptype, setGroptype] = useState('')
   const { request } = useHttp()
@@ -44,8 +45,11 @@ const Issues = () => {
     if (!issues || !issues.data) return ''
 
     if (issues.collection_type === 'ungrouped' && issues.data) {
-      return issues.data.map(e => {
-         return <Issue issue={ e }></Issue>
+      return issues.data.map(item => {
+          return <IssueItem
+            key={ `issue_${ item.id }` }
+            issue={ item }
+            onClick={ () => setShowUpdateIssue(true) } />
       })
     }
     if (issues.collection_type === 'grouped' && issues.data) {
@@ -56,7 +60,13 @@ const Issues = () => {
         if (!prev || issue.group !== prev.group) {
           elements.push(createGropDelemiter(issue))
         }
-        elements.push(<Issue issue={ issue }></Issue>)
+        elements.push(
+          <IssueItem
+            issue={ issue }
+            onClick={ () => setShowUpdateIssue(true) }
+            key={ `issue_${ issue.id }` }
+          />
+        )
         prev = issue
       })
       //console.log(elements)
@@ -104,6 +114,10 @@ const Issues = () => {
       <CreateIssue 
         handleClose={ () => setShowCreateIssue(false) } 
         show={ showCreateIssue } 
+      />
+      <UpdateIssue 
+        handleClose={ () => setShowUpdateIssue(false) } 
+        show={ showUpdateIssue } 
       />
     </div>
   )
