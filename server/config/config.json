@@ -1,0 +1,23 @@
+{
+  "development": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "database_development",
+    "port": "5432",
+    "dialect": "postgres"
+  },
+  "test": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "database_test",
+    "port": "5432",
+    "dialect": "postgres"
+  },
+  "production": {
+    "username": "postgres",
+    "password": "postgres",
+    "database": "database_production",
+    "port": "5432",
+    "dialect": "postgres"
+  }
+}

@@ -1,0 +1,70 @@
+.issue {
+  --dot-size: 40px;
+
+  display: flex;
+  align-items: center;
+  padding: 30px 0;
+}
+.issue__content {
+  padding-left: 20px;
+  width: 100%;
+}
+.issue__status-block {
+  width: auto;
+  display: inline-block;
+}
+.issue_bead {
+  --dot-size: 40px;
+
+  position: absolute;
+  height: var(--dot-size);
+  width: var(--dot-size);
+  margin-left: calc(0px - (var(--dot-size) / 2 + var(--issues-border-width) / 2));
+  background-color: var(--dark-gray);
+  border-radius: 50%;
+  display: inline-block;
+}
+.issue__bottom-container {
+  display: flex;
+  padding: 0 10px;
+}
+.issue__title {
+  display: flex;
+  align-items: baseline;
+}
+.issue__badge {
+  border-radius: 20px;
+  padding: 3px 5px;
+  border: 1px solid #323030;
+  width: 120px;
+  text-align: center;
+  white-space: nowrap
+}
+.bottom-container__item {
+  margin: 0 5px;
+}
+.bottom-container__item svg {
+  margin-right: 10px;
+}
+.issue__link-button:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+.bottom-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 10px;
+}
+.issue__link-button {
+  color: var(--dark-gray);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  margin-left: 10px;
+}
+.title_green {
+  color: "#23FF67";
+}
+.title_red {
+  color: "#F20544"
+}

@@ -1,0 +1,52 @@
+:root {
+  --issues-border-width: 6px;
+}
+.issues-page {
+  display: grid;
+  grid-template-rows: 85px 1fr;
+}
+.issues-menu-wrapper {
+  display: flex;
+  gap: 30px;
+  padding: 10px;
+}
+.issues-list {
+  margin-top: 40px;
+}
+.issues-container {
+  grid-row: 2;
+  max-width: 980px;
+  border-left: var(--issues-border-width) solid var(--dark-gray);
+  margin: auto;
+  height: 100%;
+}
+.issues-header {
+  grid-row: 1;
+  color: white;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 15px;
+  background-color: var(--dark-gray);
+}
+.user_block {
+  cursor: pointer;
+}
+.user_block__short-name {
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 28px;
+}
+.user_block svg {
+  margin-left: 10px;
+}
+.issues-container .badge-button {
+  width: 300px;
+}
+.badges-grop {
+  gap: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  padding-bottom: 60px;
+}

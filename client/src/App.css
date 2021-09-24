@@ -1,0 +1,16 @@
+.btn-badge {
+  border-radius: 20px;
+  padding: 5px 10px;
+  background-color: #323030;
+  color: white;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 28px;
+  border: none;
+  cursor: pointer;
+  width: 300px;
+}
+.btn-badge:hover {
+  color: white;
+}
