@@ -8,7 +8,6 @@ import {faChevronDown} from '@fortawesome/free-solid-svg-icons'
 import {DropdownButton, Dropdown, Button} from 'react-bootstrap'
 import useHttp from '../../hooks/http.hook'
 import AuthContext from '../../context/AuthContext'
-import moment from 'moment'
 import './Issues.css'
 
 const Issues = () => {
@@ -36,6 +35,7 @@ const Issues = () => {
   }
 
   const getListIssues = () => {
+    if (!issues) return ''
     if (groptype === 'none') {
       return <IssuesList issues={issues} onClick={handleIssueClick} />
     }
@@ -50,8 +50,7 @@ const Issues = () => {
 
   useEffect(() => {
     async function fetchData() {
-      const startOfDay = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
-      let query = `api/v1/todo?group=${groptype}&userId=${auth.user.id}&now=${startOfDay}`
+      let query = `api/v1/todo?group=${groptype}&userId=${auth.user.id}`
       const data = await request(query, 'GET', null, {
         Authorization: `Bearer ${auth.token}`
       })

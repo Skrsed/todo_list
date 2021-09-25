@@ -32,13 +32,10 @@ const IssueForm = (props) => {
 
   const formatDate = (date) => {
     const formatted = moment(date).format('YYYY-MM-DD')
-    console.log('fdate', formatted)
     return formatted
   }
 
   const createUserSelect = () => {
-    if (leadedUsers.length === 0 || !auth.user) return ''
-
     const res = leadedUsers.map((item) => {
       return (
         <option value={item.id} key={`resp_${item.id}`}>
@@ -65,7 +62,7 @@ const IssueForm = (props) => {
           type="text"
           name="title"
           placeholder="title"
-          value={props.form.title}
+          value={props.form.title || ''}
           onChange={changeHandler}
         />
       </FloatingLabel>
@@ -79,7 +76,7 @@ const IssueForm = (props) => {
           name="description"
           rows={3}
           placeholder="name"
-          value={props.form.description}
+          value={props.form.description || ''}
           onChange={changeHandler}
         />
       </FloatingLabel>
@@ -92,7 +89,7 @@ const IssueForm = (props) => {
           type="date"
           name="due_date"
           placeholder="due_date"
-          value={formatDate(props.form.due_date)}
+          value={formatDate(props.form.due_date) || ''}
           onChange={changeHandler}
         />
       </FloatingLabel>
@@ -105,7 +102,7 @@ const IssueForm = (props) => {
           aria-label="priority"
           name="priority"
           placeholder="priority"
-          value={props.form.priority}
+          value={props.form.priority || ''}
           onChange={changeHandler}
         >
           <option value="high">Высокий</option>
@@ -118,7 +115,7 @@ const IssueForm = (props) => {
           aria-label="status"
           name="status"
           placeholder="status"
-          value={props.form.status}
+          value={props.form.status || ''}
           onChange={changeHandler}
         >
           <option value="todo">К выполнению</option>
@@ -136,7 +133,7 @@ const IssueForm = (props) => {
           aria-label="responsible"
           name="responsible_id"
           placeholder="responsible"
-          value={props.form.responsible_id}
+          value={props.form.responsible_id || ''}
           onChange={changeHandler}
         >
           {createUserSelect()}

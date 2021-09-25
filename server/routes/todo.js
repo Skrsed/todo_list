@@ -153,12 +153,26 @@ router.put('/', verify, async (req, res) => {
   const user_id = jwt(token).id
 
   const todo = await models.Todo.findOne({where: {id: req.body.id}})
-  ;(todo.title = req.body.title),
-    (todo.description = req.body.description),
-    (todo.due_date = req.body.due_date),
-    (todo.status = req.body.status),
-    (todo.priority = req.body.priority),
-    (todo.responsible_id = req.body.responsible_id)
+
+  const user = await models.User.findOne({where: {id: user_id}})
+
+  const disabledFrilds = ['title', 'description', 'status', 'priority', 'responsible_id']
+
+  const hasForbidden = disabledFrilds.find(key => {
+    return todo[key] !== req.body[key]
+  })
+
+  if (hasForbidden && user.lead_id === todo.creator_id) {
+    return res.status(400).json({message: "Вы не можете изменять задачи руководителя"})
+  }
+
+
+  todo.title = req.body.title,
+  todo.description = req.body.description
+  todo.due_date = req.body.due_date
+  todo.status = req.body.status
+  todo.priority = req.body.priority
+  todo.responsible_id = req.body.responsible_id
 
   res.status(200).send(await todo.save())
 })

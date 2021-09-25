@@ -10,18 +10,24 @@ const UpdateIssue = (props) => {
   const auth = useContext(AuthContext)
 
   const [form, setForm] = useState({
-    id: props.issue.id,
-    title: props.issue.title,
-    description: props.issue.description,
-    due_date: props.issue.due_date,
-    priority: props.issue.priority,
-    status: props.issue.status,
-    responsible_id: auth.user.id
+    id: '',
+    title: '',
+    description: '',
+    due_date: '',
+    priority: '',
+    status: '',
+    responsible_id: ''
   })
+  const [error, setError] = useState('')
 
   useEffect(() => {
-    setForm(props.issue)
-  }, [props.issue])
+    setForm({...props.issue, responsible_id: auth.user.id})
+  }, [props.issue, auth.user.id])
+
+  const onHide = () => {
+    setError('')
+    props.handleClose()
+  }
 
   const {request} = useHttp()
 
@@ -35,20 +41,23 @@ const UpdateIssue = (props) => {
           Authorization: `Bearer ${auth.token}`
         }
       )
-      props.handleClose()
-    } catch (e) {}
+      onHide()
+    } catch (e) {
+      setError(e.message || 'Неизвестная ошибка')
+    }
   }
 
   return (
     <Modal
       show={props.show}
-      onHide={props.handleClose}
+      onHide={onHide}
       dialogClassName="update-issue-modal"
     >
       <Modal.Body className="modal-body-size">
         <IssueForm form={form} setForm={setForm} />
       </Modal.Body>
       <Modal.Footer>
+        <div className="update-issue-modal__error">{error}</div>
         <Button variant="badge" onClick={() => updateUser()}>
           Изменить
         </Button>

@@ -18,6 +18,7 @@ const UpdateIssue = (props) => {
   }
 
   const [form, setForm] = useState({...initForm})
+  const [error, setError] = useState('')
 
   const onChangeHandle = (value) => {
     setForm(value)
@@ -25,6 +26,7 @@ const UpdateIssue = (props) => {
 
   const onHide = () => {
     setForm(initForm)
+    setError('')
     props.handleClose()
   }
 
@@ -41,7 +43,9 @@ const UpdateIssue = (props) => {
         }
       )
       onHide()
-    } catch (e) {}
+    } catch (e) {
+      setError(e.message || 'Неизвестная ошибка')
+    }
   }
 
   return (
@@ -51,9 +55,10 @@ const UpdateIssue = (props) => {
       dialogClassName="create-issue-modal"
     >
       <Modal.Body className="modal-body-size">
-        <IssueForm form={form} setForm={onChangeHandle} />
+        <IssueForm form={form} error={error} setForm={onChangeHandle} />
       </Modal.Body>
       <Modal.Footer>
+        <div className="create-issue-modal__error">{error}</div>
         <Button variant="badge" onClick={() => createUser()}>
           Создать
         </Button>
