@@ -1,7 +1,7 @@
 const express = require('express')
-const cors = require("cors")
-const { Sequelize } = require('sequelize')
-const keys = require("./keys")
+const cors = require('cors')
+const {Sequelize} = require('sequelize')
+const keys = require('./keys')
 const dotenv = require('dotenv')
 
 const app = express()
@@ -19,9 +19,11 @@ const sequelize = new Sequelize('postgres://postgres:postgres@localhost', {
 
 app.use(cors())
 app.use(express.json())
-app.use(express.urlencoded({
-  extended: true
-}))
+app.use(
+  express.urlencoded({
+    extended: true
+  })
+)
 
 dotenv.config()
 

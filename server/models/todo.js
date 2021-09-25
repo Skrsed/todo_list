@@ -1,15 +1,12 @@
 'use strict'
 
-const {
-  Model
-} = require('sequelize')
+const {Model} = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
   class Todo extends Model {
-
     static associate(models) {
-      Todo.belongsTo(models.User, { foreignKey: 'creator_id' })
-      Todo.belongsTo(models.User, { foreignKey: 'responsible_id' })
+      Todo.belongsTo(models.User, {foreignKey: 'creator_id'})
+      Todo.belongsTo(models.User, {foreignKey: 'responsible_id'})
     }
   }
 
@@ -39,12 +36,12 @@ module.exports = (sequelize, DataTypes) => {
     creator_id: {
       allowNull: true,
       type: DataTypes.INTEGER,
-      references: { model: 'User', key: 'id' }
+      references: {model: 'User', key: 'id'}
     },
     responsible_id: {
       allowNull: true,
       type: DataTypes.INTEGER,
-      references: { model: 'User', key: 'id' }
+      references: {model: 'User', key: 'id'}
     }
   }
 
@@ -55,5 +52,5 @@ module.exports = (sequelize, DataTypes) => {
     tableName: 'todos'
   })
 
-  return Todo;
+  return Todo
 }

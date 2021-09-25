@@ -1,9 +1,9 @@
-import { Route, Switch, Redirect } from 'react-router-dom'
+import {Route, Switch, Redirect} from 'react-router-dom'
 
 import LoginPage from './pages/login/Login'
 import IssuesPage from './pages/issues/Issues'
 
-const useRoutes = isAuth => {
+const useRoutes = (isAuth) => {
   if (isAuth) {
     return (
       <Switch>

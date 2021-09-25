@@ -1,16 +1,13 @@
 'use strict'
 
-const {
-  Model
-} = require('sequelize')
+const {Model} = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
-
     static associate(models) {
-      User.hasMany(User, { foreignKey: 'lead_id' })
-      User.hasMany(models.Todo, { foreignKey: 'creator_id' })
-      User.hasMany(models.Todo, { foreignKey: 'responsible_id' })
+      User.hasMany(User, {foreignKey: 'lead_id'})
+      User.hasMany(models.Todo, {foreignKey: 'creator_id'})
+      User.hasMany(models.Todo, {foreignKey: 'responsible_id'})
     }
   }
 
@@ -47,6 +44,6 @@ module.exports = (sequelize, DataTypes) => {
     freezeTableName: true,
     tableName: 'users'
   })
-  
+
   return User
 }

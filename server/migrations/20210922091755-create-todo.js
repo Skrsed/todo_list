@@ -33,11 +33,11 @@ module.exports = {
       },
       creator_id: {
         allowNull: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       responsible_id: {
         allowNull: true,
-        type: Sequelize.INTEGER,
+        type: Sequelize.INTEGER
       },
       createdAt: {
         allowNull: false,
@@ -50,6 +50,6 @@ module.exports = {
     })
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('todos');
+    await queryInterface.dropTable('todos')
   }
 }

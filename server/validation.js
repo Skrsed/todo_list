@@ -1,14 +1,43 @@
-const Joi = require("joi");
+const Joi = require('joi')
 
 //login validation
 const loginValidation = (data) => {
   const schema = Joi.object({
-    login: Joi.string().min(3).required(),
-    password: Joi.string().min(3).required(),
-  });
+    login: Joi.string()
+      .required()
+      .error((errors) => {
+        errors.forEach((err) => {
+          switch (err.code) {
+            case 'string.empty':
+              err.message = 'Логин не может быть пустым'
+              break
+            default:
+              err.message = 'Неверный формат логина'
+              break
+          }
+        })
+        return errors
+      }),
+    password: Joi.string()
+      .min(3)
+      .required()
+      .error((errors) => {
+        errors.forEach((err) => {
+          switch (err.code) {
+            case 'string.empty':
+              err.message = 'Пароль не может быть пустым'
+              break
+            default:
+              err.message = 'Неверный формат пароля'
+              break
+          }
+        })
+        return errors
+      })
+  })
   //Validate login
-  return schema.validate(data);
-};
+  return schema.validate(data)
+}
 
 const todoValidation = (data) => {
   const schema = Joi.object({
@@ -18,18 +47,18 @@ const todoValidation = (data) => {
       .error((errors) => {
         errors.forEach((err) => {
           switch (err.code) {
-            case "string.empty":
-              err.message = "Заголовок обязателен";
-              break;
-            case "string.max":
-                err.message = "Длина заголовка ограничена 255 символами";
-                break;
+            case 'string.empty':
+              err.message = 'Заголовок обязателен'
+              break
+            case 'string.max':
+              err.message = 'Длина заголовка ограничена 255 символами'
+              break
             default:
-              err.message = "Неверный заголовок";
-              break;
+              err.message = 'Неверный заголовок'
+              break
           }
-        });
-        return errors;
+        })
+        return errors
       }),
     due_date: Joi.date()
       .required()
@@ -37,16 +66,16 @@ const todoValidation = (data) => {
         errors.forEach((err) => {
           switch (err.code) {
             default:
-              err.message = "Неверная дата";
-              break;
+              err.message = 'Неверная дата'
+              break
           }
-        });
-        return errors;
+        })
+        return errors
       }),
-    description: Joi.string().allow(''),
-  });
+    description: Joi.string().allow('')
+  })
 
-  return schema.validate(data);
-};
+  return schema.validate(data)
+}
 
-module.exports = { loginValidation, todoValidation };
+module.exports = {loginValidation, todoValidation}

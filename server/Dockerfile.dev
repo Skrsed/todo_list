@@ -1,9 +1,0 @@
-#docker build -f Dockerfile.dev -t konstantin_unicorn/todolist/api .
-#docker run -it -p 4003:5000 konstantin_unicorn/todolist/api
-
-FROM node:14.14.0-alpine
-WORKDIR /app
-COPY ./package.json ./
-RUN npm i
-COPY . .
-CMD ["npm", "run", "dev"]

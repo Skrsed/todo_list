@@ -1,12 +1,12 @@
-const jwt = require('jsonwebtoken');
+const jwt = require('jsonwebtoken')
 
-module.exports = function(req, res, next) {
+module.exports = function (req, res, next) {
   const authorization = req.header('Authorization')
   if (!authorization) res.status(401).send('Authorization header not provided')
 
   const token = authorization.slice(7)
   if (!token) return res.status(401).send('Access token is empty')
-  
+
   try {
     const verified = jwt.verify(token, process.env.SECRET_JWT_TOKEN)
     req.user = verified
