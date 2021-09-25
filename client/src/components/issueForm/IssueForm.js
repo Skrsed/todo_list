@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import { Form, FloatingLabel } from 'react-bootstrap'
 import useHttp from '../../hooks/http.hook'
 import AuthContext from '../../context/AuthContext'
+import moment from 'moment'
 
 const IssueForm = (props) => {
   const auth = useContext(AuthContext)
@@ -9,8 +10,6 @@ const IssueForm = (props) => {
   const [leadedUsers, setLeadedUsers] = useState([])
 
   const { request } = useHttp()
-  
-  console.log('rendered and', props)
 
   useEffect(() => {
     async function fetchData() {
@@ -35,13 +34,19 @@ const IssueForm = (props) => {
     ].join(' ')
   }
 
+  const formatDate = (date) => {
+    const formatted = moment(date).format('YYYY-MM-DD')
+    console.log('fdate', formatted)
+    return formatted
+  }
+
   const createUserSelect = () => {
     if (leadedUsers.length === 0 || !auth.user) return ''
 
-    const res = leadedUsers.map(e => {
-      return <option value={e.id}>{ createUserLabel(e) }</option>
+    const res = leadedUsers.map(item => {
+      return <option value={item.id} key={`resp_${item.id}`}>{ createUserLabel(item) }</option>
     })
-    res.push(<option value={auth.user.id}>{ createUserLabel(auth.user) }</option>)
+    res.push(<option value={auth.user.id} key={`resp_${auth.user.id}`}>{ createUserLabel(auth.user) }</option>)
     return res
   }
 
@@ -83,7 +88,7 @@ const IssueForm = (props) => {
           type="date"
           name="due_date"
           placeholder="due_date"
-          value={ props.form.due_date }
+          value={ formatDate(props.form.due_date) }
           onChange={ changeHandler }
         />
       </FloatingLabel>

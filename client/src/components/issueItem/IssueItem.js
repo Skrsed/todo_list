@@ -6,38 +6,42 @@ import React, { useState } from 'react';
 import moment from 'moment'
 
 const IssueItem = (props) => {
-  // TODO: use state
-  const shortName  = [
+
+  const getItitialDate = () => {
+    if ((props.issue.status === 'todo' || props.issue.status === 'doing') &&
+      moment(props.issue.due_date).isBefore(moment().utc())) {
+      return 'title_red'
+    }
+    if (props.issue.status === 'done') {
+      return 'title_green'
+    }
+    return ''
+  }
+
+  const [color] = useState(getItitialDate)
+
+  const shortName = () => {
+    if (!props.issue.User) return ''
+
+    return [
       props.issue.User.surname,
       props.issue.User.firstName[0] + '.',
       props.issue.User.patronymic[0] + '.'
-  ].join(' ')
-
-  const testObject = {
-    test: ''
+    ].join(' ')
   }
 
   const priority = {
     low: 'Низкий',
     middle: 'Средний',
     high: 'Высокий'
-  }[testObject.test2]
+  }[props.issue.priority]
 
   const status = {
     todo: 'К выполнению',
     doing: 'Выпоняется',
-    done: 'Закончена',
+    done: 'Выполнена',
     cancel: 'Отменена'
   }[props.issue.status]
-
-  let color = '' // ?!?
-  if ((status === 'todo' || status === 'doing') &&
-    moment(props.issue.due_date).isBefore(moment.tz(new Date(), "GMT"))) {
-    color = 'title_red'
-  }
-  if (props.issue.status === 'done') {
-    color = 'title_green'
-  }
   
   return (
     <div className="issue">
@@ -45,8 +49,12 @@ const IssueItem = (props) => {
       <div className="issue__content">
         <div className="issue__info-block">
           <div className="issue__title">
-           
-            <div className="issue__link-button" style={{ "color": color }}>{ props.issue.title }</div>
+            <div
+              className={`issue__link-button ${ color }`}
+              onClick={ () => props.onClick(props.issue.id) }
+            >
+              { props.issue.title }
+            </div>
           </div>
           <div className="issue__bottom-container bottom-container">
             <div className="issue__status">
@@ -54,7 +62,7 @@ const IssueItem = (props) => {
             </div>
             <div className="issue__assignation bottom-container__item">
               <FontAwesomeIcon icon={ faUserTag } />
-              <span>{ shortName }</span>
+              <span>{ shortName() }</span>
             </div>
             <div className="issue__due-date bottom-container__item">
               <FontAwesomeIcon icon={ faCalendarTimes } />

@@ -17,7 +17,6 @@
   grid-row: 2;
   max-width: 980px;
   border-left: var(--issues-border-width) solid var(--dark-gray);
-  margin: auto;
   height: 100%;
 }
 .issues-header {

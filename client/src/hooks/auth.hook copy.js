@@ -12,16 +12,12 @@ const useAuth = () => {
   const login = useCallback((jwtToken) => {
     setToken(jwtToken)
     const user_decoded = jwt_decode(jwtToken)
-    console.log('Сломаное место')
     
     setUser(user_decoded)
-
-    console.log('Пользователь и токен', user, token)
 
     localStorage.setItem(storageName, JSON.stringify({
       userId: user.id, token: jwtToken
     }))
-    console.log('should be stored')
   }, [])
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import './Login.css'
 import { Form, FloatingLabel, Button, Alert } from 'react-bootstrap';
-import React, { useContext, useState, useEffect} from 'react'
+import React, { useContext, useState } from 'react'
 import useHttp from '../../hooks/http.hook'
 import AuthContext from '../../context/AuthContext'
 
@@ -19,7 +19,6 @@ const Login = () => {
   const loginHandler = async () => {
     try {
       const data = await request('api/v1/auth/login', 'POST', { ...form })
-      console.log('Пришло от сервера', data.token)
       auth.login(data.token)
 
     } catch (e) {}

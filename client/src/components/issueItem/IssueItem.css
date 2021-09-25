@@ -36,7 +36,6 @@
   border-radius: 20px;
   padding: 3px 5px;
   border: 1px solid #323030;
-  width: 120px;
   text-align: center;
   white-space: nowrap
 }
@@ -63,8 +62,8 @@
   margin-left: 10px;
 }
 .title_green {
-  color: "#23FF67";
+  color: #23FF67;
 }
 .title_red {
-  color: "#F20544"
+  color: #F20544;
 }

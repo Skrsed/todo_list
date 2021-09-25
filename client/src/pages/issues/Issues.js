@@ -1,21 +1,22 @@
-import React, { useContext, useState, useEffect } from 'react';
-import './Issues.css'
-import IssueItem from '../../components/issueItem/IssueItem'
-import UpdateIssue from '../../components/updateIssue/UpdateIssue';
+import React, { useContext, useState, useEffect, useCallback } from 'react'
+import UpdateIssue from '../../components/updateIssue/UpdateIssue'
 import CreateIssue from '../../components/createIssue/CreateIssue'
+import IssuesList from '../../components/issuesList/IssuesList'
+import IssuesGropList from '../../components/issuesGropList/IssuesGropList'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
-import { DropdownButton, Dropdown, Button } from 'react-bootstrap';
+import { DropdownButton, Dropdown, Button } from 'react-bootstrap'
 import useHttp from '../../hooks/http.hook'
 import AuthContext from '../../context/AuthContext'
+import './Issues.css'
 
 const Issues = () => {
   const auth = useContext(AuthContext)
-  console.log('isssues start', auth)
   const [showCreateIssue, setShowCreateIssue] = useState(false)
   const [showUpdateIssue, setShowUpdateIssue] = useState(false)
-  const [issues, setIssues] = useState(false)
-  const [groptype, setGroptype] = useState('')
+  const [toUpdateIssue, setToUpdateIssue] = useState({})
+  const [issues, setIssues] = useState([])
+  const [groptype, setGroptype] = useState('none')
   const { request } = useHttp()
 
   const createUserLabel = [
@@ -23,55 +24,21 @@ const Issues = () => {
     auth.user.firstname[0] + '.',
     auth.user.patronymic[0] + '.'
   ].join(' ')
-  
-  const gropDateTranslation = (type) => {
-    return {
-      today: 'Сегодня',
-      week: 'Эта неделя',
-      more_than_week: 'Больше недели',
-    }[type]
-  }
+
   const handleMenuClick = (e) => {
     setGroptype(e.target.name)
   }
-  const createGropDelemiter = (item) => {
-    if (groptype === 'by_date') {
-      return <h3>{ gropDateTranslation(item.group) }</h3>
-    }
 
-    return <h3>{ item.group }</h3>
+  const handleIssueClick = (issue) => {
+    setToUpdateIssue(issue)
+    setShowUpdateIssue(true)
   }
-  const generateIssuesList = () => {
-    if (!issues || !issues.data) return ''
 
-    if (issues.collection_type === 'ungrouped' && issues.data) {
-      return issues.data.map(item => {
-          return <IssueItem
-            key={ `issue_${ item.id }` }
-            issue={ item }
-            onClick={ () => setShowUpdateIssue(true) } />
-      })
+  const getListIssues = () => {
+    if (groptype === 'none') {    
+      return <IssuesList issues={ issues } onClick={ handleIssueClick }/>
     }
-    if (issues.collection_type === 'grouped' && issues.data) {
-      let prev = null
-      let elements = []
-      issues.data.forEach(issue =>{
-
-        if (!prev || issue.group !== prev.group) {
-          elements.push(createGropDelemiter(issue))
-        }
-        elements.push(
-          <IssueItem
-            issue={ issue }
-            onClick={ () => setShowUpdateIssue(true) }
-            key={ `issue_${ issue.id }` }
-          />
-        )
-        prev = issue
-      })
-      //console.log(elements)
-      return elements
-    } 
+    return <IssuesGropList type={ groptype } groups={ issues } onClick={ handleIssueClick } />
   }
 
   useEffect(() => {
@@ -81,15 +48,14 @@ const Issues = () => {
         Authorization: `Bearer ${auth.token}`
       })
 
-      setIssues(data);
+      setIssues([...data]);
     }
 
     fetchData()
-  }, [request, auth.token, groptype, auth.user.id])
+  }, [request, auth.token, groptype, auth.user.id, showCreateIssue, showUpdateIssue])
 
   return (
-    <div className="page issues-page" style={{ "backgroud-color": "#f2f2f2" }}>
-      
+    <div className="page issues-page">
       <header className="issues-header">
         <div className="user_block">
           <span className="user_block__short-name">{ createUserLabel }</span>
@@ -105,18 +71,17 @@ const Issues = () => {
             <Dropdown.Item name="by_responsible" onClick={ handleMenuClick }>По пользователям</Dropdown.Item>
           </DropdownButton>
         </div>
-        <div className="issues-list">
-          {
-            generateIssuesList()
-          }
-        </div>
+        {
+          getListIssues()
+        }
       </main>
       <CreateIssue 
         handleClose={ () => setShowCreateIssue(false) } 
         show={ showCreateIssue } 
       />
       <UpdateIssue 
-        handleClose={ () => setShowUpdateIssue(false) } 
+        handleClose={ () => setShowUpdateIssue(false) }
+        issue={ toUpdateIssue }
         show={ showUpdateIssue } 
       />
     </div>

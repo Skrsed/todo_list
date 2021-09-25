@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Modal, Button } from 'react-bootstrap'
 import IssueForm from '../issueForm/IssueForm'
 import AuthContext from '../../context/AuthContext'
@@ -9,14 +9,18 @@ const UpdateIssue = (props) => {
   const auth = useContext(AuthContext)
   
   const [form, setForm] = useState({
-    id: props.id,
-    title: props.title,
-    description: props.description,
-    due_date: props.due_date,
-    priority: props.priority,
-    status: props.status,
+    id: props.issue.id,
+    title: props.issue.title,
+    description: props.issue.description,
+    due_date: props.issue.due_date,
+    priority: props.issue.priority,
+    status: props.issue.status,
     responsible_id: auth.user.id
   })
+
+  useEffect(() => {
+    setForm(props.issue)
+  }, [props.issue])
 
   const { request } = useHttp()
 
@@ -39,7 +43,7 @@ const UpdateIssue = (props) => {
         <IssueForm form={ form } setForm={ setForm } />
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="badge" onClick={ () => updateUser() }>Создать</Button>
+        <Button variant="badge" onClick={ () => updateUser() }>Изменить</Button>
       </Modal.Footer>
     </Modal>
   ) 

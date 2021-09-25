@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Modal, Button } from 'react-bootstrap'
 import IssueForm from '../issueForm/IssueForm'
 import AuthContext from '../../context/AuthContext'
@@ -8,14 +8,25 @@ import './CreateIssue.css'
 const UpdateIssue = (props) => {
   const auth = useContext(AuthContext)
   
-  const [form, setForm] = useState({
+  const initForm = {
     title: '',
     description: '',
     due_date: '',
     priority: 'low',
     status: 'todo',
     responsible_id: auth.user.id
-  })
+  }
+
+  const [form, setForm] = useState({...initForm})
+
+  const onChangeHandle = (value) => {
+    setForm(value)
+  }
+
+  const onHide = () => {
+    setForm(initForm)
+    props.handleClose()
+  }
 
   const { request } = useHttp()
 
@@ -24,18 +35,20 @@ const UpdateIssue = (props) => {
       await request('api/v1/todo', 'POST', { ...form }, {
         Authorization: `Bearer ${auth.token}`
       })
-      props.handleClose()
-    } catch (e) {}
+      onHide()
+    } catch (e) {
+
+    }
   }
 
   return (
     <Modal 
       show={ props.show } 
-      onHide={ props.handleClose }
+      onHide={ onHide }
       dialogClassName= "create-issue-modal"
     >
       <Modal.Body className="modal-body-size">
-        <IssueForm form={ form } setForm={ setForm } />
+        <IssueForm form={ form } setForm={ onChangeHandle } />
       </Modal.Body>
       <Modal.Footer>
         <Button variant="badge" onClick={ () => createUser() }>Создать</Button>
