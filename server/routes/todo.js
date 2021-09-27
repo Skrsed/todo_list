@@ -20,6 +20,7 @@ const getGropedByDate = async (userId) => {
       'due_date',
       'priority',
       'status',
+      'responsible_id',
       [Sequelize.literal(`${caseToday} ${caseWeek} ${caseOther}`), 'group']
     ],
     where: {responsible_id: userId},
@@ -47,6 +48,7 @@ const getGropedByResponsible = async (userId) => {
       'due_date',
       'priority',
       'status',
+      'responsible_id',
       [Sequelize.literal(group), 'group']
     ],
     include: [
