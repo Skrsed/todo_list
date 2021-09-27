@@ -6,6 +6,7 @@ const models = db.sequelize.models
 const {Sequelize} = require('sequelize')
 const jwt = require('jwt-decode')
 const {todoValidation} = require('../validation')
+const moment = require('moment')
 
 const getGropedByDate = async (userId) => {
   const caseToday =
@@ -158,14 +159,17 @@ router.put('/', verify, async (req, res) => {
 
   const user = await models.User.findOne({where: {id: user_id}})
 
-  const disabledFrilds = ['title', 'description', 'status', 'priority', 'responsible_id']
+  const disabledFrilds = ['title', 'description', 'due_date', 'priority', 'responsible_id']
 
   const hasForbidden = disabledFrilds.find(key => {
+    if (key === 'due_date') {
+      return moment(todo[key]).format('DD/MM/YYYY') !== moment(req.body[key]).format('DD/MM/YYYY')
+    }
     return todo[key] !== req.body[key]
   })
 
   if (hasForbidden && user.lead_id === todo.creator_id) {
-    return res.status(400).json({message: "Вы не можете изменять задачи руководителя"})
+    return res.status(400).json({message: "Вы можете изменить только статус"})
   }
 
 

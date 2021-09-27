@@ -17,4 +17,11 @@ router.get('/leaded', verify, async (req, res) => {
   res.status(200).send(users)
 })
 
+router.get('/:userId', verify, async (req, res) => {
+  const user = await models.User.findOne({
+    where: {id: req.params.userId}
+  })
+  res.status(200).send(user)
+})
+
 module.exports = router

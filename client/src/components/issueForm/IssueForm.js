@@ -16,9 +16,21 @@ const IssueForm = (props) => {
       const data = await request('api/v1/user/leaded', 'GET', null, {
         Authorization: `Bearer ${auth.token}`
       })
+      const rUser = await request(`api/v1/user/${props.form.responsible_id}`, 'GET', null, {
+        Authorization: `Bearer ${auth.token}`
+      })
+      const findResponsible = data.find(e => e.id === rUser.id)
+      if (!findResponsible) {
+        data.push(rUser)
+      }
+      const findedAuthUser = data.find(e => e.id === auth.user.id)
+      if (!findedAuthUser) {
+        data.push(auth.user)
+      }
+
       setLeadedUsers(data)
     } catch (e) {}
-  }, [auth.token, request])
+  }, [auth.token, request, props.form, auth.user])
 
   useEffect(() => {
     fetchLeadedUsers()
@@ -45,11 +57,6 @@ const IssueForm = (props) => {
         </option>
       )
     })
-    res.push(
-      <option value={auth.user.id} key={`resp_${auth.user.id}`}>
-        {createUserLabel(auth.user)}
-      </option>
-    )
 
     return res
   }

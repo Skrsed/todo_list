@@ -26,6 +26,7 @@ const UpdateIssue = (props) => {
   const onHide = useCallback(() => {
     clearError()
     props.onHide()
+    setForm({...props.issue})
   }, [props, clearError])
 
   useEffect(() => {

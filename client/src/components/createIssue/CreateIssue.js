@@ -10,14 +10,18 @@ const UpdateIssue = (props) => {
 
   const {request, error, clearError} = useHttp()
 
-  const [form, setForm] = useState({
-    title: '',
-    description: '',
-    due_date: '',
-    priority: 'low',
-    status: 'todo',
-    responsible_id: auth.user.id
-  })
+  const initialState = useCallback(() => {
+    return {
+      title: '',
+      description: '',
+      due_date: '',
+      priority: 'low',
+      status: 'todo',
+      responsible_id: auth.user.id
+    }
+  }, [auth.user.id])
+  
+  const [form, setForm] = useState(initialState())
 
   const onChangeHandle = useCallback((value) => {
     setForm(value)
@@ -25,8 +29,9 @@ const UpdateIssue = (props) => {
 
   const onHide = useCallback(() => {
     clearError()
+    setForm({...initialState()})
     props.onHide()
-  }, [props, clearError])
+  }, [props, clearError, initialState])
 
   const createIssue = useCallback(async () => {
     try {
