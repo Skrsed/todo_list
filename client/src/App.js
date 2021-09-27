@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import {BrowserRouter as Router} from 'react-router-dom'
 import AuthContext from './context/AuthContext'
 import useAuth from './hooks/auth.hook'
@@ -9,6 +9,11 @@ const App = () => {
   const {login, user, token, ready} = useAuth()
   const isAuth = !!user
   const routes = useRoutes(isAuth)
+
+  useEffect(() => {
+    document.title = "Список задач"
+  }, [])
+
   return (
     <AuthContext.Provider
       value={{
