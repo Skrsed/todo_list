@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken')
 
 module.exports = function (req, res, next) {
   const authorization = req.header('Authorization')
-  if (!authorization) res.status(401).send('Authorization header not provided')
+  if (!authorization) return res.status(401).send('Authorization header not provided')
 
   const token = authorization.slice(7)
   if (!token) return res.status(401).send('Access token is empty')

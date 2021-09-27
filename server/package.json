@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "nodemon",
     "serve": "nodemon index.js",
-    "migrate": "node-pg-migrate",
-    "db:create": "sequelize-cli db:create"
+    "db:create": "sequelize-cli db:create",
+    "db:migrate": "sequelize-cli db:migrate",
+    "db:seed": "sequelize-cli db:seed:all"
   },
   "author": "k_zelenin",
   "license": "ISC",

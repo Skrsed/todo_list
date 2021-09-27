@@ -1,0 +1,13 @@
+FROM node:14.14.0-alpine
+WORKDIR /app
+COPY ./package.json .
+RUN npm i 
+    # Create db.
+    # && npm run db:create \
+    # Migrate tables
+    # && npm run db:migrate \
+    # Migrate tables
+    # && npm run db:seed
+COPY . .
+
+CMD ["npm", "run", "dev"]

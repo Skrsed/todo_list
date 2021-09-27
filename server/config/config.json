@@ -3,6 +3,7 @@
     "username": "postgres",
     "password": "postgres",
     "database": "database_development",
+    "host": "postgres",
     "port": "5432",
     "dialect": "postgres"
   },
