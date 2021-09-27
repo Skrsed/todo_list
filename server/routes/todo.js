@@ -68,11 +68,11 @@ const aggregateData = (items) => {
   if (!items) return []
 
   const groups = items.reduce((acc, current) => {
-    if (acc.length === 0 || !acc.find((x) => x.title === current.group)) {
-      return [...acc, {title: current.group, items: [current]}]
+    if (acc.length === 0 || !acc.find((x) => x.groupTitle === current.group)) {
+      return [...acc, {groupTitle: current.group, children: [current]}]
     }
 
-    acc[acc.length - 1].items.push(current)
+    acc[acc.length - 1].children.push(current)
 
     return acc
   }, [])
