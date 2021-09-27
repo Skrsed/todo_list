@@ -1,9 +1,3 @@
-.create-issue-modal {
-
-}
-.modalBodySize {
-  height: 90vh;
-}
 .create-issue-modal__error {
   color: crimson;
   float: left;

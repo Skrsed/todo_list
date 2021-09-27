@@ -2,6 +2,7 @@
   --issues-border-width: 6px;
 }
 .issues-page {
+  height: 100%;
   display: grid;
   grid-template-rows: 85px 1fr;
 }
@@ -10,11 +11,9 @@
   gap: 30px;
   padding: 10px;
 }
-.issues-list {
-  margin-top: 40px;
-}
 .issues-container {
   grid-row: 2;
+  height: 100%;
   max-width: 980px;
   border-left: var(--issues-border-width) solid var(--dark-gray);
   height: 100%;
@@ -48,4 +47,13 @@
   flex-wrap: wrap;
   justify-content: flex-end;
   padding-bottom: 60px;
+}
+.spiner-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+}
+.groplist-wrapper {
+  padding: 20px 0;
+  padding: 40px 0;
 }

@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useState, useContext, useEffect, useCallback} from 'react'
 import {Form, FloatingLabel} from 'react-bootstrap'
 import useHttp from '../../hooks/http.hook'
 import AuthContext from '../../context/AuthContext'
@@ -10,19 +10,22 @@ const IssueForm = (props) => {
   const [leadedUsers, setLeadedUsers] = useState([])
 
   const {request} = useHttp()
-
-  useEffect(() => {
-    async function fetchData() {
+  
+  const fetchLeadedUsers = useCallback(async () => {
+    try {
       const data = await request('api/v1/user/leaded', 'GET', null, {
         Authorization: `Bearer ${auth.token}`
       })
       setLeadedUsers(data)
-    }
-    fetchData()
-  }, [request, auth.token])
+    } catch (e) {}
+  }, [auth.token, request])
+
+  useEffect(() => {
+    fetchLeadedUsers()
+  }, [fetchLeadedUsers])
 
   const changeHandler = (event) => {
-    props.setForm({...props.form, [event.target.name]: event.target.value})
+    props.onChange({...props.form, [event.target.name]: event.target.value})
   }
 
   const createUserLabel = (user) => {
@@ -31,12 +34,11 @@ const IssueForm = (props) => {
   }
 
   const formatDate = (date) => {
-    const formatted = moment(date).format('YYYY-MM-DD')
-    return formatted
+    return moment(date).format('YYYY-MM-DD')
   }
 
   const createUserSelect = () => {
-    const res = leadedUsers.map((item) => {
+    let res = leadedUsers.map((item) => {
       return (
         <option value={item.id} key={`resp_${item.id}`}>
           {createUserLabel(item)}
@@ -48,6 +50,7 @@ const IssueForm = (props) => {
         {createUserLabel(auth.user)}
       </option>
     )
+
     return res
   }
 
@@ -73,13 +76,14 @@ const IssueForm = (props) => {
       >
         <Form.Control
           as="textarea"
+          style={{ height: '100px' }}
           name="description"
-          rows={3}
-          placeholder="name"
+          placeholder="description"
           value={props.form.description || ''}
           onChange={changeHandler}
         />
       </FloatingLabel>
+      
       <FloatingLabel
         controlId="floatingInput"
         label="Дата окончания"

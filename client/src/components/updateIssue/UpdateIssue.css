@@ -1,11 +1,3 @@
-.update-issue-modal {
-  width: 70vw;
-  
-  max-width: 70vw;
-}
-.modalBodySize {
-  height: 90vh;
-}
 .update-issue-modal__error {
   color: crimson;
   float: left;

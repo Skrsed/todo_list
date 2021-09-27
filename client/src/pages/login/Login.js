@@ -1,27 +1,28 @@
 import './Login.css'
 import {Form, FloatingLabel, Button, Alert} from 'react-bootstrap'
-import React, {useContext, useState} from 'react'
+import React, {useContext, useCallback, useState} from 'react'
 import useHttp from '../../hooks/http.hook'
 import AuthContext from '../../context/AuthContext'
 
 const Login = () => {
   const auth = useContext(AuthContext)
   const {request, loading, error} = useHttp()
+  
   const [form, setForm] = useState({
     login: '',
     password: ''
   })
 
-  const changeHandler = (event) => {
+  const changeHandler = useCallback((event) => {
     setForm({...form, [event.target.name]: event.target.value})
-  }
+  }, [form])
 
-  const loginHandler = async () => {
+  const loginHandler = useCallback(async () => {
     try {
       const data = await request('api/v1/auth/login', 'POST', {...form})
       auth.login(data.token)
     } catch (e) {}
-  }
+  },[auth, form, request])
 
   return (
     <div className="page page-login">

@@ -1,16 +1,16 @@
-import React, {useState, useContext, useEffect} from 'react'
+import React, {useState, useContext, useCallback, useEffect} from 'react'
 import {Modal, Button} from 'react-bootstrap'
 import IssueForm from '../issueForm/IssueForm'
 import AuthContext from '../../context/AuthContext'
 import useHttp from '../../hooks/http.hook'
-
 import './UpdateIssue.css'
 
 const UpdateIssue = (props) => {
   const auth = useContext(AuthContext)
 
+  const {request, error, clearError} = useHttp()
+
   const [form, setForm] = useState({
-    id: '',
     title: '',
     description: '',
     due_date: '',
@@ -18,20 +18,21 @@ const UpdateIssue = (props) => {
     status: '',
     responsible_id: ''
   })
-  const [error, setError] = useState('')
+
+  const onChangeHandle = useCallback((value) => {
+    setForm(value)
+  }, [])
+
+  const onHide = useCallback(() => {
+    clearError()
+    props.onHide()
+  }, [props, clearError])
 
   useEffect(() => {
-    setForm({...props.issue, responsible_id: auth.user.id})
+    setForm({...props.issue})
   }, [props.issue, auth.user.id])
 
-  const onHide = () => {
-    setError('')
-    props.handleClose()
-  }
-
-  const {request} = useHttp()
-
-  const updateUser = async () => {
+  const updateIssue = useCallback(async () => {
     try {
       await request(
         'api/v1/todo',
@@ -42,10 +43,9 @@ const UpdateIssue = (props) => {
         }
       )
       onHide()
-    } catch (e) {
-      setError(e.message || 'Неизвестная ошибка')
-    }
-  }
+      props.handlers.createOrUpdate()
+    } catch (e) { }
+  }, [auth.token, form, onHide, props.handlers, request])
 
   return (
     <Modal
@@ -54,11 +54,11 @@ const UpdateIssue = (props) => {
       dialogClassName="update-issue-modal"
     >
       <Modal.Body className="modal-body-size">
-        <IssueForm form={form} setForm={setForm} />
+        <IssueForm form={form} onChange={onChangeHandle} />
       </Modal.Body>
       <Modal.Footer>
         <div className="update-issue-modal__error">{error}</div>
-        <Button variant="badge" onClick={() => updateUser()}>
+        <Button variant="badge" onClick={() => updateIssue()}>
           Изменить
         </Button>
       </Modal.Footer>
