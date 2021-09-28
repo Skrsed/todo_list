@@ -2,7 +2,7 @@ Todo list app sample
 ========================
 first:
 -------------------------
- * docker-compose run --build
+ * docker-compose up --build
 
 then:
 -------------------------
